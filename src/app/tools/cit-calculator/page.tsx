@@ -528,7 +528,7 @@ export default function CITCalculatorPage() {
               Sign up for Nalo Finance to monitor your turnover, profits, and tax
               obligations in real-time.
             </p>
-            <Link href="https://app.nalofinance.com/signup">
+            <Link href="https://app.nalofinance.com/register">
               <Button className="font-bold uppercase text-xs bg-blue-500 hover:bg-blue-600">
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4" strokeWidth={3} />

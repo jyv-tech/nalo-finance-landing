@@ -551,7 +551,7 @@ export default function PITCalculatorPage() {
               Sign up for Nalo Finance to get automatic tax estimates as you
               record your income.
             </p>
-            <Link href="https://app.nalofinance.com/signup">
+            <Link href="https://app.nalofinance.com/register">
               <Button className="font-bold uppercase text-xs">
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4" strokeWidth={3} />

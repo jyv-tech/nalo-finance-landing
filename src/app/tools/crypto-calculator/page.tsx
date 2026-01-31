@@ -524,7 +524,7 @@ export default function CryptoCalculatorPage() {
               Sign up for Nalo Finance to log your crypto trades and get
               year-round tax estimates.
             </p>
-            <Link href="https://app.nalofinance.com/signup">
+            <Link href="https://app.nalofinance.com/register">
               <Button className="font-bold uppercase text-xs bg-orange-500 hover:bg-orange-600">
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4" strokeWidth={3} />

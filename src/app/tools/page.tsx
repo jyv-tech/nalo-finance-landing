@@ -280,7 +280,7 @@ export default function ToolsPage() {
               and get personalized tax estimates throughout the year.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-              <Link href="https://app.nalofinance.com/signup">
+              <Link href="https://app.nalofinance.com/register">
                 <Button
                   size="lg"
                   className="bg-background text-foreground hover:bg-background/90 font-black text-base px-8"
