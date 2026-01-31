@@ -12,7 +12,8 @@ import {
   formatReadTime,
   getAuthorName,
 } from "@/lib/blog";
-import { PostCardCompact, Newsletter, Sidebar, ShareButtons, FloatingShare, EditorContent } from "@/components/blog";
+import { sanitizeHtml } from "@/lib/sanitize";
+import { PostCardCompact, Newsletter, Sidebar, ShareButtons, FloatingShare, EditorContent, ArticleSchema, BreadcrumbSchema } from "@/components/blog";
 import { ViewTracker } from "./view-tracker";
 
 interface BlogPostPageProps {
@@ -75,8 +76,25 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const postUrl = `https://nalofinance.com/blog/${post.slug}`;
 
+  // Build breadcrumb items for schema
+  const breadcrumbItems = [
+    { name: "Home", url: "https://nalofinance.com" },
+    { name: "Blog", url: "https://nalofinance.com/blog" },
+  ];
+  if (post.category) {
+    breadcrumbItems.push({
+      name: post.category.name,
+      url: `https://nalofinance.com/blog/category/${post.category.slug}`,
+    });
+  }
+  breadcrumbItems.push({ name: post.title, url: postUrl });
+
   return (
     <article className="min-h-screen">
+      {/* Structured Data */}
+      <ArticleSchema post={post} url={postUrl} />
+      <BreadcrumbSchema items={breadcrumbItems} />
+
       {/* Hero */}
       <header className="bg-primary/5 border-b-4 border-primary">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
@@ -226,7 +244,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     prose-ul:list-disc prose-ol:list-decimal
                     prose-li:text-muted-foreground
                   "
-                  dangerouslySetInnerHTML={{ __html: post.content }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
                 />
               )}
 

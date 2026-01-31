@@ -180,10 +180,15 @@ export default function ContactPage() {
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6" aria-describedby={error ? "form-error" : undefined}>
                   {error && (
-                    <div className="p-4 bg-destructive/10 border-2 border-destructive flex items-start gap-3">
-                      <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" strokeWidth={3} />
+                    <div
+                      id="form-error"
+                      role="alert"
+                      aria-live="polite"
+                      className="p-4 bg-destructive/10 border-2 border-destructive flex items-start gap-3"
+                    >
+                      <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" strokeWidth={3} aria-hidden="true" />
                       <div>
                         <p className="text-sm font-bold text-destructive">{error}</p>
                       </div>
@@ -192,7 +197,7 @@ export default function ContactPage() {
                   {/* Name */}
                   <div>
                     <label htmlFor="name" className="block text-sm font-black uppercase mb-2">
-                      Your Name *
+                      Your Name <span aria-hidden="true">*</span>
                     </label>
                     <input
                       type="text"
@@ -201,6 +206,7 @@ export default function ContactPage() {
                       value={formData.name}
                       onChange={handleChange}
                       required
+                      aria-required="true"
                       className="w-full p-3 border-2 border-border bg-background font-bold focus:outline-none focus:border-primary transition-colors"
                       placeholder="John Doe"
                     />
@@ -209,7 +215,7 @@ export default function ContactPage() {
                   {/* Email */}
                   <div>
                     <label htmlFor="email" className="block text-sm font-black uppercase mb-2">
-                      Email Address *
+                      Email Address <span aria-hidden="true">*</span>
                     </label>
                     <input
                       type="email"
@@ -218,6 +224,7 @@ export default function ContactPage() {
                       value={formData.email}
                       onChange={handleChange}
                       required
+                      aria-required="true"
                       className="w-full p-3 border-2 border-border bg-background font-bold focus:outline-none focus:border-primary transition-colors"
                       placeholder="john@example.com"
                     />
@@ -226,7 +233,7 @@ export default function ContactPage() {
                   {/* Category */}
                   <div>
                     <label htmlFor="category" className="block text-sm font-black uppercase mb-2">
-                      Category *
+                      Category <span aria-hidden="true">*</span>
                     </label>
                     <select
                       id="category"
@@ -234,6 +241,7 @@ export default function ContactPage() {
                       value={formData.category}
                       onChange={handleChange}
                       required
+                      aria-required="true"
                       className="w-full p-3 border-2 border-border bg-background font-bold focus:outline-none focus:border-primary transition-colors"
                     >
                       <option value="general">General Inquiry</option>
@@ -248,7 +256,7 @@ export default function ContactPage() {
                   {/* Subject */}
                   <div>
                     <label htmlFor="subject" className="block text-sm font-black uppercase mb-2">
-                      Subject *
+                      Subject <span aria-hidden="true">*</span>
                     </label>
                     <input
                       type="text"
@@ -257,6 +265,7 @@ export default function ContactPage() {
                       value={formData.subject}
                       onChange={handleChange}
                       required
+                      aria-required="true"
                       className="w-full p-3 border-2 border-border bg-background font-bold focus:outline-none focus:border-primary transition-colors"
                       placeholder="How can we help?"
                     />
@@ -265,7 +274,7 @@ export default function ContactPage() {
                   {/* Message */}
                   <div>
                     <label htmlFor="message" className="block text-sm font-black uppercase mb-2">
-                      Message *
+                      Message <span aria-hidden="true">*</span>
                     </label>
                     <textarea
                       id="message"
@@ -273,6 +282,7 @@ export default function ContactPage() {
                       value={formData.message}
                       onChange={handleChange}
                       required
+                      aria-required="true"
                       rows={6}
                       className="w-full p-3 border-2 border-border bg-background font-bold focus:outline-none focus:border-primary transition-colors resize-none"
                       placeholder="Tell us more about your inquiry..."

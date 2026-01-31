@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 // Editor.js data structure (v2.31.0)
 interface EditorJSData {
@@ -108,7 +109,7 @@ function ParagraphBlock({ data }: { data: { text: string } }) {
   return (
     <p
       className="mb-4 leading-relaxed text-muted-foreground"
-      dangerouslySetInnerHTML={{ __html: data.text }}
+      dangerouslySetInnerHTML={{ __html: sanitizeHtml(data.text) }}
     />
   );
 }
@@ -131,7 +132,7 @@ function HeaderBlock({ data }: { data: { text: string; level: number } }) {
   return (
     <Tag
       className={styles[level]}
-      dangerouslySetInnerHTML={{ __html: data.text }}
+      dangerouslySetInnerHTML={{ __html: sanitizeHtml(data.text) }}
     />
   );
 }
@@ -157,7 +158,7 @@ function ListBlock({
 
           return (
             <li key={idx}>
-              <span dangerouslySetInnerHTML={{ __html: content }} />
+              <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }} />
               {nestedItems && renderItems(nestedItems, depth + 1)}
             </li>
           );
@@ -222,9 +223,9 @@ function CodeBlock({ data }: { data: { code: string } }) {
 function QuoteBlock({ data }: { data: { text: string; caption?: string } }) {
   return (
     <blockquote>
-      <p dangerouslySetInnerHTML={{ __html: data.text }} />
+      <p dangerouslySetInnerHTML={{ __html: sanitizeHtml(data.text) }} />
       {data.caption && (
-        <cite className="text-sm text-muted-foreground">— {data.caption}</cite>
+        <cite className="text-sm text-muted-foreground">— {sanitizeHtml(data.caption)}</cite>
       )}
     </blockquote>
   );
@@ -273,7 +274,7 @@ function TableBlock({
                 <th
                   key={idx}
                   className="border-2 border-border px-4 py-3 text-left font-black uppercase text-sm"
-                  dangerouslySetInnerHTML={{ __html: cell }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(cell) }}
                 />
               ))}
             </tr>
@@ -286,7 +287,7 @@ function TableBlock({
                 <td
                   key={cellIdx}
                   className="border-2 border-border px-4 py-3 text-sm"
-                  dangerouslySetInnerHTML={{ __html: cell }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(cell) }}
                 />
               ))}
             </tr>

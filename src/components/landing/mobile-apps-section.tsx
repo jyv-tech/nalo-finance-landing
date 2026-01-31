@@ -1,5 +1,6 @@
 import { Smartphone, Apple, Download, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { MOBILE_APP_CONFIG } from "@/lib/constants";
 
 export function MobileAppsSection() {
   return (
@@ -137,7 +138,7 @@ export function MobileAppsSection() {
                     <div className="h-full bg-success" style={{ width: "75%" }} />
                   </div>
                   <p className="text-xs font-bold text-muted-foreground text-center">
-                    Expected launch: Q2 2025
+                    Expected launch: {MOBILE_APP_CONFIG.launchDate}
                   </p>
                 </div>
               </div>
@@ -148,19 +149,19 @@ export function MobileAppsSection() {
         {/* Beta Tester Stats */}
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
           <div className="text-center p-6 bg-background border-2 border-border">
-            <p className="text-3xl md:text-4xl font-black text-primary">250+</p>
+            <p className="text-3xl md:text-4xl font-black text-primary">{MOBILE_APP_CONFIG.betaTesters}</p>
             <p className="text-xs font-bold text-muted-foreground uppercase mt-2">Beta Testers</p>
           </div>
           <div className="text-center p-6 bg-background border-2 border-border">
-            <p className="text-3xl md:text-4xl font-black text-primary">4.8★</p>
+            <p className="text-3xl md:text-4xl font-black text-primary">{MOBILE_APP_CONFIG.betaRating}★</p>
             <p className="text-xs font-bold text-muted-foreground uppercase mt-2">Beta Rating</p>
           </div>
           <div className="text-center p-6 bg-background border-2 border-border">
-            <p className="text-3xl md:text-4xl font-black text-primary">iOS & Android</p>
+            <p className="text-3xl md:text-4xl font-black text-primary">{MOBILE_APP_CONFIG.platforms}</p>
             <p className="text-xs font-bold text-muted-foreground uppercase mt-2">Both Platforms</p>
           </div>
           <div className="text-center p-6 bg-background border-2 border-border">
-            <p className="text-3xl md:text-4xl font-black text-primary">Q2 2025</p>
+            <p className="text-3xl md:text-4xl font-black text-primary">{MOBILE_APP_CONFIG.launchDate}</p>
             <p className="text-xs font-bold text-muted-foreground uppercase mt-2">Launch Date</p>
           </div>
         </div>

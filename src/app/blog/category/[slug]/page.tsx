@@ -29,6 +29,9 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
       description: category.description || `Browse all articles in ${category.name} category`,
       images: category.image ? [{ url: category.image }] : undefined,
     },
+    alternates: {
+      canonical: `https://nalofinance.com/blog/category/${slug}`,
+    },
   };
 }
 
