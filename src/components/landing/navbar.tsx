@@ -17,7 +17,7 @@ import {
   CreditCard,
 } from "lucide-react";
 import { ThemeToggleDropdown } from "@/components/theme-toggle";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef, KeyboardEvent } from "react";
 
 const features = [
   {
@@ -82,6 +82,9 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [featuresOpen, setFeaturesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const menuItemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -90,6 +93,50 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Handle keyboard navigation for dropdown
+  const handleKeyDown = useCallback((e: KeyboardEvent<HTMLButtonElement | HTMLDivElement>) => {
+    if (!featuresOpen && (e.key === "Enter" || e.key === " " || e.key === "ArrowDown")) {
+      e.preventDefault();
+      setFeaturesOpen(true);
+      setFocusedIndex(0);
+      return;
+    }
+
+    if (featuresOpen) {
+      switch (e.key) {
+        case "Escape":
+          e.preventDefault();
+          setFeaturesOpen(false);
+          setFocusedIndex(-1);
+          break;
+        case "ArrowDown":
+          e.preventDefault();
+          setFocusedIndex((prev) => (prev < features.length - 1 ? prev + 1 : 0));
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          setFocusedIndex((prev) => (prev > 0 ? prev - 1 : features.length - 1));
+          break;
+        case "Tab":
+          if (e.shiftKey && focusedIndex === 0) {
+            setFeaturesOpen(false);
+            setFocusedIndex(-1);
+          } else if (!e.shiftKey && focusedIndex === features.length - 1) {
+            setFeaturesOpen(false);
+            setFocusedIndex(-1);
+          }
+          break;
+      }
+    }
+  }, [featuresOpen, focusedIndex]);
+
+  // Focus menu item when focusedIndex changes
+  useEffect(() => {
+    if (featuresOpen && focusedIndex >= 0 && menuItemsRef.current[focusedIndex]) {
+      menuItemsRef.current[focusedIndex]?.focus();
+    }
+  }, [featuresOpen, focusedIndex]);
 
   return (
     <nav
@@ -121,8 +168,10 @@ export function Navbar() {
             {/* Features Dropdown */}
             <div
               className="relative"
+              ref={dropdownRef}
               onMouseEnter={() => setFeaturesOpen(true)}
-              onMouseLeave={() => setFeaturesOpen(false)}
+              onMouseLeave={() => { setFeaturesOpen(false); setFocusedIndex(-1); }}
+              onKeyDown={handleKeyDown}
             >
               <button
                 className={`flex items-center gap-1 px-4 py-2 text-sm font-black uppercase transition-all duration-200 ${
@@ -132,14 +181,18 @@ export function Navbar() {
                 }`}
                 aria-expanded={featuresOpen}
                 aria-haspopup="true"
+                aria-controls="features-menu"
                 aria-label="Features menu"
+                onClick={() => setFeaturesOpen(!featuresOpen)}
+                onKeyDown={handleKeyDown}
               >
                 Features
-                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${featuresOpen ? "rotate-180" : ""}`} strokeWidth={3} />
+                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${featuresOpen ? "rotate-180" : ""}`} strokeWidth={3} aria-hidden="true" />
               </button>
 
               {/* Dropdown Menu */}
               <div
+                id="features-menu"
                 className={`absolute top-full left-0 w-80 bg-background border-2 border-black shadow-[8px_8px_0_0_rgba(0,0,0,1)] transition-all duration-200 ${
                   featuresOpen
                     ? "opacity-100 translate-y-0 pointer-events-auto"
@@ -155,10 +208,16 @@ export function Navbar() {
                       <Link
                         key={`${feature.name}-${index}`}
                         href={feature.href}
-                        className="flex items-start gap-3 p-3 hover:bg-muted/50 transition-colors group/item"
+                        ref={(el) => { menuItemsRef.current[index] = el; }}
+                        role="menuitem"
+                        tabIndex={featuresOpen ? 0 : -1}
+                        className={`flex items-start gap-3 p-3 hover:bg-muted/50 transition-colors group/item ${
+                          focusedIndex === index ? "bg-muted/50" : ""
+                        }`}
+                        onClick={() => { setFeaturesOpen(false); setFocusedIndex(-1); }}
                       >
                         <div className={`w-10 h-10 ${feature.color} flex items-center justify-center shrink-0 group-hover/item:shadow-[4px_4px_0_0_rgba(0,0,0,1)] transition-shadow`}>
-                          <Icon className="h-5 w-5 text-white" strokeWidth={3} />
+                          <Icon className="h-5 w-5 text-white" strokeWidth={3} aria-hidden="true" />
                         </div>
                         <div className="flex-1">
                           <p className="text-sm font-black uppercase group-hover/item:text-primary transition-colors">
@@ -168,7 +227,7 @@ export function Navbar() {
                             {feature.description}
                           </p>
                         </div>
-                        <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all" strokeWidth={3} />
+                        <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-1 transition-all" strokeWidth={3} aria-hidden="true" />
                       </Link>
                     );
                   })}

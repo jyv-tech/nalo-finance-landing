@@ -27,6 +27,9 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
       title: `#${tag.name} Articles | Nalo Finance Blog`,
       description: `Browse all articles tagged with #${tag.name}`,
     },
+    alternates: {
+      canonical: `https://nalofinance.com/blog/tag/${slug}`,
+    },
   };
 }
 
