@@ -582,7 +582,7 @@ export default function WHTCalculatorPage() {
               Sign up for Nalo Finance to track payments and generate WHT
               remittance reports automatically.
             </p>
-            <Link href="https://app.nalofinance.com/signup">
+            <Link href="https://app.nalofinance.com/register">
               <Button className="font-bold uppercase text-xs bg-purple-500 hover:bg-purple-600">
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4" strokeWidth={3} />
